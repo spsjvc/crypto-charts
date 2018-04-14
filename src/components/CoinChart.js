@@ -68,6 +68,7 @@ class CoinChart extends Component {
             formatter={(value, name, props) =>
               value > 1 ? formatToUsd(value) : formatToUsdUnderOne(value)
             }
+            labelFormatter={label => moment.unix(label).format('LL')}
           />
           <Area
             type="monotone"
