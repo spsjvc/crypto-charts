@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List, Avatar } from 'antd';
+import { List, Avatar, Card } from 'antd';
 
 import { imageBaseUrl } from '../utils/constants';
 import { fetchTopCoins } from '../utils/apiHelper';
@@ -26,21 +26,23 @@ class CoinList extends Component {
     const { loading, coins } = this.state;
 
     return (
-      <List
-        bordered
-        size="small"
-        itemLayout="horizontal"
-        loading={loading}
-        dataSource={coins}
-        renderItem={item => (
-          <List.Item>
-            <List.Item.Meta
-              avatar={<Avatar src={item.ImageUrl} />}
-              title={item.FullName}
-            />
-          </List.Item>
-        )}
-      />
+      <Card bordered={false} loading={loading}>
+        <List
+          bordered
+          size="small"
+          itemLayout="horizontal"
+          loading={loading}
+          dataSource={coins}
+          renderItem={item => (
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar src={item.ImageUrl} />}
+                title={item.FullName}
+              />
+            </List.Item>
+          )}
+        />
+      </Card>
     );
   }
 }
