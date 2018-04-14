@@ -7,11 +7,11 @@ import {
   Area,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   ResponsiveContainer
 } from 'recharts';
 
+import { formatToUsd, formatToUsdUnderOne } from '../utils/formatHelper';
 import { fetchDailyDataForCoin } from '../utils/apiHelper';
 
 class CoinChart extends Component {
@@ -29,10 +29,7 @@ class CoinChart extends Component {
 
     fetchDailyDataForCoin(coin).then(response => {
       this.setState({
-        data: response.data.Data.map(value => ({
-          ...value,
-          time: moment.unix(value.time).format('DD.MM.YYYY')
-        }))
+        data: response.data.Data
       });
     });
   }
@@ -58,10 +55,20 @@ class CoinChart extends Component {
               <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <XAxis dataKey="time" />
-          <YAxis />
-          <CartesianGrid strokeDasharray="3 3" />
-          <Tooltip />
+          <XAxis
+            dataKey="time"
+            tickFormatter={tick => moment.unix(tick).format('LL')}
+          />
+          <YAxis
+            tickFormatter={tick =>
+              tick > 1 ? formatToUsd(tick) : formatToUsdUnderOne(tick)
+            }
+          />
+          <Tooltip
+            formatter={(value, name, props) =>
+              value > 1 ? formatToUsd(value) : formatToUsdUnderOne(value)
+            }
+          />
           <Area
             type="monotone"
             dataKey="low"
