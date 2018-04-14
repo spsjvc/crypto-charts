@@ -3,4 +3,6 @@ const gridConfig = {
   minH: 4
 };
 
-export { gridConfig };
+const imageBaseUrl = 'https://cryptocompare.com/';
+
+export { gridConfig, imageBaseUrl };
