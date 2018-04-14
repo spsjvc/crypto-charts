@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import { List, Avatar, Card } from 'antd';
+import PropTypes from 'prop-types';
+import { List, Avatar, Card, Button, Icon } from 'antd';
 
 import { imageBaseUrl } from '../utils/constants';
 import { fetchTopCoins } from '../utils/apiHelper';
 
 class CoinList extends Component {
+  static propTypes = {
+    onAddChart: PropTypes.func.isRequired
+  };
+
   state = {
     loading: true,
     coins: []
@@ -23,6 +28,7 @@ class CoinList extends Component {
   }
 
   render() {
+    const { onAddChart } = this.props;
     const { loading, coins } = this.state;
 
     return (
@@ -39,6 +45,14 @@ class CoinList extends Component {
                 avatar={<Avatar src={item.ImageUrl} />}
                 title={item.FullName}
               />
+              <Button
+                type="primary"
+                onClick={() => {
+                  onAddChart(item.Name);
+                }}
+              >
+                <Icon type="plus-circle-o" />
+              </Button>
             </List.Item>
           )}
         />

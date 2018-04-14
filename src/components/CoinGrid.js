@@ -1,59 +1,71 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import GridLayout from 'react-grid-layout';
 import { Button, Card } from 'antd';
 
-import ExampleChart from './ExampleChart';
+import CoinChart from './CoinChart';
 
 import { gridConfig } from '../utils/constants';
 
 class CoinGrid extends Component {
+  static propTypes = {
+    displayedCharts: PropTypes.array.isRequired,
+    onDeleteChart: PropTypes.func.isRequired
+  };
+
   state = {
     layout: []
   };
 
-  deleteChart = chartId => {
+  componentWillReceiveProps(nextProps) {
     const { layout } = this.state;
 
-    this.setState({
-      layout: layout.filter(l => l.i !== chartId)
-    });
-  };
+    const oldNumberOfCoins = this.props.displayedCharts.length;
+    const newNumberOfCoins = nextProps.displayedCharts.length;
 
-  addChart = () => {
-    const { layout } = this.state;
+    const coin =
+      newNumberOfCoins > oldNumberOfCoins
+        ? nextProps.displayedCharts.filter(
+            c => !this.props.displayedCharts.includes(c)
+          )[0]
+        : this.props.displayedCharts.filter(
+            c => !nextProps.displayedCharts.includes(c)
+          )[0];
+
+    const updatedLayout =
+      newNumberOfCoins > oldNumberOfCoins
+        ? layout.concat([
+            {
+              ...gridConfig,
+              x: 0,
+              y: 0,
+              w: 4,
+              h: 4,
+              i: coin,
+              coin
+            }
+          ])
+        : layout.filter(l => l.coin !== coin);
 
     this.setState({
-      layout: layout.concat([
-        {
-          ...gridConfig,
-          i: Math.random()
-            .toString(36)
-            .substring(7),
-          x: 0,
-          y: 0,
-          w: 4,
-          h: 4
-        }
-      ])
+      layout: updatedLayout
     });
-  };
+  }
 
   render() {
+    const { onDeleteChart } = this.props;
     const { layout } = this.state;
 
     return (
       <Card bordered={false}>
-        <Button type="primary" onClick={this.addChart}>
-          Add Chart
-        </Button>
         <GridLayout layout={layout} cols={12} rowHeight={50} width={1300}>
           {layout.map(item => (
-            <div key={item.i}>
-              <ExampleChart key={item.i} />
+            <div key={item.coin}>
+              <CoinChart coin={item.coin} />
               <Button
                 type="danger"
                 onClick={() => {
-                  this.deleteChart(item.i);
+                  onDeleteChart(item.coin);
                 }}
               >
                 Delete
