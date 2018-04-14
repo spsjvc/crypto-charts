@@ -45,11 +45,18 @@ class CoinList extends Component {
     const { loading, coins } = this.state;
 
     return (
-      <Card bordered={false} loading={loading}>
+      <Card
+        title="Cryptocurrencies"
+        bordered
+        loading={loading}
+        style={{
+          overflow: 'auto',
+          margin: '15px',
+          height: 'calc(100vh - 30px)'
+        }}
+      >
         <List
-          bordered
           size="small"
-          itemLayout="horizontal"
           loading={loading}
           dataSource={coins}
           renderItem={item => (
@@ -57,6 +64,7 @@ class CoinList extends Component {
               <List.Item.Meta
                 avatar={<Avatar src={item.ImageUrl} />}
                 title={item.FullName}
+                description={item.Name}
               />
               <Dropdown
                 overlay={
@@ -72,7 +80,7 @@ class CoinList extends Component {
                 }
               >
                 <Button style={{ marginLeft: 8 }}>
-                  <Icon type="plus-circle-o" />
+                  Add chart <Icon type="down" />
                 </Button>
               </Dropdown>
             </List.Item>

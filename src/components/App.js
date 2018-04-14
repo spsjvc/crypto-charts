@@ -31,10 +31,10 @@ class App extends Component {
     return (
       <div>
         <Row>
-          <Col span={4}>
+          <Col span={6}>
             <CoinList onAddChart={this.addChart} />
           </Col>
-          <Col span={20}>
+          <Col span={18}>
             <CoinGrid
               displayedCharts={displayedCharts}
               onDeleteChart={this.deleteChart}

@@ -58,7 +58,7 @@ class CoinGrid extends Component {
 
     return (
       <Card bordered={false}>
-        <GridLayout layout={layout} cols={12} rowHeight={50} width={1300}>
+        <GridLayout layout={layout} cols={12} rowHeight={50} width={1200}>
           {layout.map(item => (
             <div key={item.chart}>
               <CoinChart chart={item.chart} />
