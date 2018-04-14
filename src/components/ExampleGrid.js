@@ -3,12 +3,14 @@ import GridLayout from 'react-grid-layout';
 
 import ExampleChart from './ExampleChart';
 
+import { gridConfig } from '../utils/constants';
+
 class ExampleGrid extends Component {
   state = {
     layout: [
-      { i: 'a', x: 0, y: 0, w: 6, h: 4 },
-      { i: 'b', x: 6, y: 0, w: 6, h: 4 },
-      { i: 'c', x: 0, y: 6, w: 12, h: 4 }
+      { ...gridConfig, i: 'a', x: 0, y: 0, w: 4, h: 4 },
+      { ...gridConfig, i: 'b', x: 6, y: 0, w: 6, h: 4 },
+      { ...gridConfig, i: 'c', x: 0, y: 6, w: 12, h: 4 }
     ]
   };
 
