@@ -12,11 +12,11 @@ import {
 } from 'recharts';
 
 import { formatToUsd, formatToUsdUnderOne } from '../utils/formatHelper';
-import { fetchDailyDataForCoin } from '../utils/apiHelper';
+import { fetchDataForChart } from '../utils/apiHelper';
 
 class CoinChart extends Component {
   static propTypes = {
-    coin: PropTypes.string.isRequired
+    chart: PropTypes.string.isRequired
   };
 
   state = {
@@ -25,9 +25,12 @@ class CoinChart extends Component {
   };
 
   componentWillMount() {
-    const { coin } = this.props;
+    const { chart } = this.props;
 
-    fetchDailyDataForCoin(coin).then(response => {
+    const coin = chart.split('-')[0];
+    const interval = chart.split('-')[1];
+
+    fetchDataForChart(coin, interval).then(response => {
       this.setState({
         data: response.data.Data
       });

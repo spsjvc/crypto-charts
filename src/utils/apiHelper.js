@@ -5,9 +5,9 @@ const fetchTopCoins = () =>
     'https://min-api.cryptocompare.com/data/top/totalvol?tsym=USD&limit=20'
   );
 
-const fetchDailyDataForCoin = coin =>
+const fetchDataForChart = (coin, interval) =>
   axios.get(
-    `https://min-api.cryptocompare.com/data/histoday?fsym=${coin}&tsym=USD&limit=10`
+    `https://min-api.cryptocompare.com/data/histoday?fsym=${coin}&tsym=USD&limit=${interval}`
   );
 
-export { fetchTopCoins, fetchDailyDataForCoin };
+export { fetchTopCoins, fetchDataForChart };

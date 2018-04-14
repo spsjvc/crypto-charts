@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { List, Avatar, Card, Button, Icon } from 'antd';
+import { List, Dropdown, Avatar, Card, Button, Icon, Menu } from 'antd';
 
 import { imageBaseUrl } from '../utils/constants';
 import { fetchTopCoins } from '../utils/apiHelper';
+
+const menuItems = [
+  { key: '7', label: 'Last 7 days' },
+  { key: '30', label: 'Last month' },
+  { key: '90', label: 'Last 3 months' },
+  { key: '180', label: 'Last 6 months' },
+  { key: '365', label: 'Last year' }
+];
 
 class CoinList extends Component {
   static propTypes = {
@@ -27,8 +35,13 @@ class CoinList extends Component {
     });
   }
 
-  render() {
+  handleMenuItemClick = (coin, interval) => {
     const { onAddChart } = this.props;
+
+    onAddChart(`${coin}-${interval}`);
+  };
+
+  render() {
     const { loading, coins } = this.state;
 
     return (
@@ -45,14 +58,23 @@ class CoinList extends Component {
                 avatar={<Avatar src={item.ImageUrl} />}
                 title={item.FullName}
               />
-              <Button
-                type="primary"
-                onClick={() => {
-                  onAddChart(item.Name);
-                }}
+              <Dropdown
+                overlay={
+                  <Menu
+                    onClick={menuItem => {
+                      this.handleMenuItemClick(item.Name, menuItem.key);
+                    }}
+                  >
+                    {menuItems.map(menuItem => (
+                      <Menu.Item key={menuItem.key}>{menuItem.label}</Menu.Item>
+                    ))}
+                  </Menu>
+                }
               >
-                <Icon type="plus-circle-o" />
-              </Button>
+                <Button style={{ marginLeft: 8 }}>
+                  <Icon type="plus-circle-o" />
+                </Button>
+              </Dropdown>
             </List.Item>
           )}
         />

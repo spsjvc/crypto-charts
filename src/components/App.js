@@ -9,19 +9,19 @@ class App extends Component {
     displayedCharts: []
   };
 
-  addChartForCoin = coin => {
+  addChart = chart => {
     const { displayedCharts } = this.state;
 
     this.setState({
-      displayedCharts: displayedCharts.concat([coin])
+      displayedCharts: displayedCharts.concat([chart])
     });
   };
 
-  deleteChartForCoin = coin => {
+  deleteChart = chart => {
     const { displayedCharts } = this.state;
 
     this.setState({
-      displayedCharts: displayedCharts.filter(c => c !== coin)
+      displayedCharts: displayedCharts.filter(c => c !== chart)
     });
   };
 
@@ -32,12 +32,12 @@ class App extends Component {
       <div>
         <Row>
           <Col span={4}>
-            <CoinList onAddChart={this.addChartForCoin} />
+            <CoinList onAddChart={this.addChart} />
           </Col>
           <Col span={20}>
             <CoinGrid
               displayedCharts={displayedCharts}
-              onDeleteChart={this.deleteChartForCoin}
+              onDeleteChart={this.deleteChart}
             />
           </Col>
         </Row>

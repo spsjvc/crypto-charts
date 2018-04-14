@@ -20,11 +20,11 @@ class CoinGrid extends Component {
   componentWillReceiveProps(nextProps) {
     const { layout } = this.state;
 
-    const oldNumberOfCoins = this.props.displayedCharts.length;
-    const newNumberOfCoins = nextProps.displayedCharts.length;
+    const oldNumberOfCharts = this.props.displayedCharts.length;
+    const newNumberOfCharts = nextProps.displayedCharts.length;
 
-    const coin =
-      newNumberOfCoins > oldNumberOfCoins
+    const chart =
+      newNumberOfCharts > oldNumberOfCharts
         ? nextProps.displayedCharts.filter(
             c => !this.props.displayedCharts.includes(c)
           )[0]
@@ -33,7 +33,7 @@ class CoinGrid extends Component {
           )[0];
 
     const updatedLayout =
-      newNumberOfCoins > oldNumberOfCoins
+      newNumberOfCharts > oldNumberOfCharts
         ? layout.concat([
             {
               ...gridConfig,
@@ -41,11 +41,11 @@ class CoinGrid extends Component {
               y: 0,
               w: 4,
               h: 4,
-              i: coin,
-              coin
+              i: chart,
+              chart
             }
           ])
-        : layout.filter(l => l.coin !== coin);
+        : layout.filter(l => l.chart !== chart);
 
     this.setState({
       layout: updatedLayout
@@ -60,12 +60,12 @@ class CoinGrid extends Component {
       <Card bordered={false}>
         <GridLayout layout={layout} cols={12} rowHeight={50} width={1300}>
           {layout.map(item => (
-            <div key={item.coin}>
-              <CoinChart coin={item.coin} />
+            <div key={item.chart}>
+              <CoinChart chart={item.chart} />
               <Button
                 type="danger"
                 onClick={() => {
-                  onDeleteChart(item.coin);
+                  onDeleteChart(item.chart);
                 }}
               >
                 Delete
