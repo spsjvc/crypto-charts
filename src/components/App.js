@@ -1,53 +1,25 @@
 import React, { Component } from 'react';
+import { Row, Col, Card } from 'antd';
 
 import ExampleGrid from './ExampleGrid';
-
-import { imageBaseUrl } from '../utils/constants';
-import { fetchTopCoins } from '../utils/httpHelper';
+import CoinList from './CoinList';
 
 class App extends Component {
-  state = {
-    loading: true,
-    coins: []
-  };
-
-  componentWillMount() {
-    fetchTopCoins().then(response => {
-      this.setState({
-        loading: false,
-        coins: Object.values(response.data.Data).map(coin => ({
-          ...coin.CoinInfo,
-          ImageUrl: `${imageBaseUrl}${coin.CoinInfo.ImageUrl}`
-        }))
-      });
-    });
-  }
-
   render() {
-    const { loading, coins } = this.state;
-
     return (
       <div>
-        <ExampleGrid />
-
-        {loading ? (
-          <div>Loading coins...</div>
-        ) : (
-          <div>
-            <ul>
-              {coins.map(coin => (
-                <div key={coin.Name}>
-                  {`${coin.FullName} (${coin.Name})`}
-                  <img
-                    alt={coin.FullName}
-                    src={coin.ImageUrl}
-                    style={{ width: '25px', height: '25px' }}
-                  />
-                </div>
-              ))}
-            </ul>
-          </div>
-        )}
+        <Row>
+          <Col span={4}>
+            <Card bordered={false}>
+              <CoinList />
+            </Card>
+          </Col>
+          <Col span={20}>
+            <Card bordered={false}>
+              <ExampleGrid />
+            </Card>
+          </Col>
+        </Row>
       </div>
     );
   }
