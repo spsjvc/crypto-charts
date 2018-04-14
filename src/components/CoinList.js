@@ -46,7 +46,6 @@ class CoinList extends Component {
 
     return (
       <Card
-        title="Cryptocurrencies"
         bordered
         loading={loading}
         style={{
@@ -62,7 +61,16 @@ class CoinList extends Component {
           renderItem={item => (
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar src={item.ImageUrl} />}
+                avatar={
+                  <Avatar
+                    style={{
+                      marginTop: '15px',
+                      height: '15px',
+                      width: '15px'
+                    }}
+                    src={item.ImageUrl}
+                  />
+                }
                 title={item.FullName}
                 description={item.Name}
               />
