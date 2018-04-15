@@ -32,13 +32,26 @@ class CoinGrid extends Component {
             c => !nextProps.displayedCharts.includes(c)
           )[0];
 
+    let xCoordinate;
+    let yCoordinate;
+
+    if (layout.length === 0) {
+      xCoordinate = 0;
+      yCoordinate = 0;
+    } else {
+      const lastLayout =
+        layout.length === 0 ? { x: 0, y: 0 } : layout[layout.length - 1];
+      xCoordinate = lastLayout.x === 8 ? 0 : lastLayout.x + 4;
+      yCoordinate = lastLayout.x === 8 ? lastLayout.y + 5 : lastLayout.y;
+    }
+
     const updatedLayout =
       newNumberOfCharts > oldNumberOfCharts
         ? layout.concat([
             {
               ...gridConfig,
-              x: 0,
-              y: 0,
+              x: xCoordinate,
+              y: yCoordinate,
               w: gridConfig.minW,
               h: gridConfig.minH,
               i: chart.key,
