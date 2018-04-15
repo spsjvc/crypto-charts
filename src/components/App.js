@@ -21,7 +21,7 @@ class App extends Component {
     const { displayedCharts } = this.state;
 
     this.setState({
-      displayedCharts: displayedCharts.filter(c => c !== chart)
+      displayedCharts: displayedCharts.filter(c => c.key !== chart.key)
     });
   };
 

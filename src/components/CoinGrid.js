@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import GridLayout from 'react-grid-layout';
-import { Button, Card } from 'antd';
+import { Button, Card, Icon } from 'antd';
 
 import CoinChart from './CoinChart';
 
@@ -39,13 +39,13 @@ class CoinGrid extends Component {
               ...gridConfig,
               x: 0,
               y: 0,
-              w: 4,
-              h: 4,
-              i: chart,
+              w: gridConfig.minW,
+              h: gridConfig.minH,
+              i: chart.key,
               chart
             }
           ])
-        : layout.filter(l => l.chart !== chart);
+        : layout.filter(l => l.chart.key !== chart.key);
 
     this.setState({
       layout: updatedLayout
@@ -53,26 +53,51 @@ class CoinGrid extends Component {
   }
 
   render() {
-    const { onDeleteChart } = this.props;
+    const { onDeleteChart, displayedCharts } = this.props;
     const { layout } = this.state;
 
     return (
-      <Card bordered={false}>
-        <GridLayout layout={layout} cols={12} rowHeight={50} width={1200}>
-          {layout.map(item => (
-            <div key={item.chart}>
-              <CoinChart chart={item.chart} />
-              <Button
-                type="danger"
-                onClick={() => {
-                  onDeleteChart(item.chart);
+      <Card
+        bordered
+        style={{
+          overflow: 'auto',
+          margin: '15px 15px 15px 0',
+          height: 'calc(100vh - 30px)'
+        }}
+      >
+        {displayedCharts.length === 0 ? (
+          <div>
+            Hmmm...
+            <br />
+            Looks like you haven't added any charts yet. Check out the menu on
+            the left to add some.
+          </div>
+        ) : (
+          <GridLayout layout={layout} cols={12} rowHeight={50} width={1200}>
+            {layout.map(item => (
+              <div
+                style={{
+                  border: '1px solid #e8e8e8',
+                  borderRadius: '2px',
+                  padding: '10px 15px 70px 15px'
                 }}
+                key={item.chart.key}
               >
-                Delete
-              </Button>
-            </div>
-          ))}
-        </GridLayout>
+                <h4>{`${item.chart.name} - ${item.chart.interval}`}</h4>
+                <CoinChart chart={item.chart.key} />
+                <Button
+                  style={{ marginLeft: '-2.5px' }}
+                  type="danger"
+                  onClick={() => {
+                    onDeleteChart(item.chart);
+                  }}
+                >
+                  <Icon type="delete" />
+                </Button>
+              </div>
+            ))}
+          </GridLayout>
+        )}
       </Card>
     );
   }

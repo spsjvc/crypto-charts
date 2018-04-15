@@ -35,10 +35,14 @@ class CoinList extends Component {
     });
   }
 
-  handleMenuItemClick = (coin, interval) => {
+  handleMenuItemClick = (coin, menuItem) => {
     const { onAddChart } = this.props;
 
-    onAddChart(`${coin}-${interval}`);
+    onAddChart({
+      key: `${coin.Name}-${menuItem.key}`,
+      name: coin.FullName,
+      interval: menuItem.item.props.children
+    });
   };
 
   render() {
@@ -78,7 +82,7 @@ class CoinList extends Component {
                 overlay={
                   <Menu
                     onClick={menuItem => {
-                      this.handleMenuItemClick(item.Name, menuItem.key);
+                      this.handleMenuItemClick(item, menuItem);
                     }}
                   >
                     {menuItems.map(menuItem => (
