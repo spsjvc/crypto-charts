@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, message } from 'antd';
 
 import CoinList from './CoinList';
 import CoinGrid from './CoinGrid';
@@ -11,6 +11,11 @@ class App extends Component {
 
   addChart = chart => {
     const { displayedCharts } = this.state;
+
+    if (displayedCharts.filter(c => c.key === chart.key).length > 0) {
+      message.error('This chart is already on display.');
+      return;
+    }
 
     this.setState({
       displayedCharts: displayedCharts.concat([chart])
