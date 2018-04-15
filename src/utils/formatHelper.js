@@ -1,13 +1,17 @@
 import numeral from 'numeral';
 
-const formatToUsd = number =>
-  number === 0
-    ? numeral(number).format('$0.00')
-    : numeral(number).format('$0,0.00');
+const formatToUsd = number => numeral(number).format('$0,0.0000');
 
-const formatToUsdUnderOne = number =>
-  number === 0
-    ? numeral(number).format('$0.00')
-    : numeral(number).format('$0,0.00000');
+const smartFormatToUsd = number => {
+  if (number === 0) {
+    return numeral(number).format('$0');
+  }
 
-export { formatToUsd, formatToUsdUnderOne };
+  if (number <= 1) {
+    return numeral(number).format('$0,0.00');
+  }
+
+  return numeral(number).format('$0a');
+};
+
+export { formatToUsd, smartFormatToUsd };

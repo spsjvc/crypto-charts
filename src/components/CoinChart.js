@@ -11,7 +11,7 @@ import {
   ResponsiveContainer
 } from 'recharts';
 
-import { formatToUsd, formatToUsdUnderOne } from '../utils/formatHelper';
+import { formatToUsd, smartFormatToUsd } from '../utils/formatHelper';
 import { fetchDataForChart } from '../utils/apiHelper';
 
 class CoinChart extends Component {
@@ -62,15 +62,9 @@ class CoinChart extends Component {
             dataKey="time"
             tickFormatter={tick => moment.unix(tick).format('LL')}
           />
-          <YAxis
-            tickFormatter={tick =>
-              tick > 1 ? formatToUsd(tick) : formatToUsdUnderOne(tick)
-            }
-          />
+          <YAxis tickFormatter={tick => smartFormatToUsd(tick)} />
           <Tooltip
-            formatter={(value, name, props) =>
-              value > 1 ? formatToUsd(value) : formatToUsdUnderOne(value)
-            }
+            formatter={(value, name, props) => formatToUsd(value)}
             labelFormatter={label => moment.unix(label).format('LL')}
           />
           <Area
