@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { List, Dropdown, Avatar, Card, Button, Icon, Menu } from 'antd';
 
+import { sortBy } from 'lodash';
+
 import { imageBaseUrl } from '../utils/constants';
 import { fetchTopCoins } from '../utils/apiHelper';
 
@@ -27,10 +29,13 @@ class CoinList extends Component {
     fetchTopCoins().then(response => {
       this.setState({
         loading: false,
-        coins: Object.values(response.data.Data).map(coin => ({
-          ...coin.CoinInfo,
-          ImageUrl: `${imageBaseUrl}${coin.CoinInfo.ImageUrl}`
-        }))
+        coins: sortBy(
+          Object.values(response.data.Data).map(coin => ({
+            ...coin.CoinInfo,
+            ImageUrl: `${imageBaseUrl}${coin.CoinInfo.ImageUrl}`
+          })),
+          coin => coin.FullName
+        )
       });
     });
   }
