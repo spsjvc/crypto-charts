@@ -6,11 +6,14 @@ import { Button, Card, Icon } from 'antd';
 import CoinChart from './CoinChart';
 
 import { gridConfig } from '../utils/constants';
+import { saveLayoutToStorage } from '../utils/storageHelper';
 
 class CoinGrid extends Component {
   static propTypes = {
     displayedCharts: PropTypes.array.isRequired,
-    onDeleteChart: PropTypes.func.isRequired
+    onDeleteChart: PropTypes.func.isRequired,
+    savedLayouts: PropTypes.array.isRequired,
+    layout: PropTypes.object
   };
 
   state = {
@@ -18,7 +21,27 @@ class CoinGrid extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.layout !== this.props.layout) {
+      this.setState({
+        layout: nextProps.layout ? nextProps.layout.layout : []
+      });
+
+      return;
+    }
+
     const { layout } = this.state;
+
+    const oldNumberOfSavedLayouts = this.props.savedLayouts.length;
+    const newNumberOfSavedLayouts = nextProps.savedLayouts.length;
+
+    if (newNumberOfSavedLayouts > oldNumberOfSavedLayouts) {
+      saveLayoutToStorage({
+        name: nextProps.savedLayouts[newNumberOfSavedLayouts - 1],
+        layout
+      });
+
+      return;
+    }
 
     const oldNumberOfCharts = this.props.displayedCharts.length;
     const newNumberOfCharts = nextProps.displayedCharts.length;
