@@ -10,4 +10,9 @@ const fetchDataForChart = (coin, interval) =>
     `https://min-api.cryptocompare.com/data/histoday?fsym=${coin}&tsym=USD&limit=${interval}`
   );
 
-export { fetchTopCoins, fetchDataForChart };
+const fetchLiveDataForChart = coin =>
+  axios.get(
+    `https://min-api.cryptocompare.com/data/histominute?fsym=${coin}&tsym=USD&limit=2`
+  );
+
+export { fetchTopCoins, fetchDataForChart, fetchLiveDataForChart };

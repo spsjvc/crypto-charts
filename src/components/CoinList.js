@@ -12,7 +12,8 @@ const menuItems = [
   { key: '30', label: 'Last month' },
   { key: '90', label: 'Last 3 months' },
   { key: '180', label: 'Last 6 months' },
-  { key: '365', label: 'Last year' }
+  { key: '365', label: 'Last year' },
+  { key: 'live', label: 'Live' }
 ];
 
 class CoinList extends Component {

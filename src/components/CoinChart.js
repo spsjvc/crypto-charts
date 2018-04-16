@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
+import { minBy, maxBy } from 'lodash';
+
 import {
   AreaChart,
   Area,
@@ -11,8 +13,12 @@ import {
   ResponsiveContainer
 } from 'recharts';
 
-import { formatToUsd, smartFormatToUsd } from '../utils/formatHelper';
-import { fetchDataForChart } from '../utils/apiHelper';
+import {
+  formatToUsd,
+  liveFormatToUsd,
+  smartFormatToUsd
+} from '../utils/formatHelper';
+import { fetchDataForChart, fetchLiveDataForChart } from '../utils/apiHelper';
 
 class CoinChart extends Component {
   static propTypes = {
@@ -21,7 +27,8 @@ class CoinChart extends Component {
 
   state = {
     loading: true,
-    data: null
+    data: null,
+    isLive: false
   };
 
   componentWillMount() {
@@ -30,6 +37,28 @@ class CoinChart extends Component {
     const coin = chart.split('-')[0];
     const interval = chart.split('-')[1];
 
+    if (interval === 'live') {
+      fetchLiveDataForChart(coin).then(response => {
+        this.setState(
+          {
+            data: response.data.Data,
+            isLive: true
+          },
+          () => {
+            this.liveInterval = setInterval(() => {
+              fetchLiveDataForChart(coin).then(response => {
+                this.setState({
+                  data: response.data.Data
+                });
+              });
+            }, 60000);
+          }
+        );
+      });
+
+      return;
+    }
+
     fetchDataForChart(coin, interval).then(response => {
       this.setState({
         data: response.data.Data
@@ -37,8 +66,12 @@ class CoinChart extends Component {
     });
   }
 
+  componentWillUnmount() {
+    clearInterval(this.liveInterval);
+  }
+
   render() {
-    const { data } = this.state;
+    const { data, isLive } = this.state;
 
     return (
       <ResponsiveContainer>
@@ -60,12 +93,31 @@ class CoinChart extends Component {
           </defs>
           <XAxis
             dataKey="time"
-            tickFormatter={tick => moment.unix(tick).format('LL')}
+            tickFormatter={tick =>
+              isLive
+                ? moment.unix(tick).format('LTS')
+                : moment.unix(tick).format('LL')
+            }
           />
-          <YAxis tickFormatter={tick => smartFormatToUsd(tick)} />
+          {isLive ? (
+            <YAxis
+              type="number"
+              domain={[minBy(data, d => d.low), maxBy(data, d => d.high)]}
+              tickFormatter={tick => smartFormatToUsd(tick)}
+            />
+          ) : (
+            <YAxis tickFormatter={tick => smartFormatToUsd(tick)} />
+          )}
+
           <Tooltip
-            formatter={(value, name, props) => formatToUsd(value)}
-            labelFormatter={label => moment.unix(label).format('LL')}
+            formatter={(value, name, props) =>
+              isLive ? liveFormatToUsd(value) : formatToUsd(value)
+            }
+            labelFormatter={tick =>
+              isLive
+                ? moment.unix(tick).format('LTS')
+                : moment.unix(tick).format('LL')
+            }
           />
           <Area
             type="monotone"

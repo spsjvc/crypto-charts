@@ -1,6 +1,7 @@
 import numeral from 'numeral';
 
 const formatToUsd = number => numeral(number).format('$0,0.0000');
+const liveFormatToUsd = number => numeral(number).format('$0,0.000000');
 
 const smartFormatToUsd = number => {
   if (number === 0) {
@@ -14,4 +15,4 @@ const smartFormatToUsd = number => {
   return numeral(number).format('$0a');
 };
 
-export { formatToUsd, smartFormatToUsd };
+export { formatToUsd, liveFormatToUsd, smartFormatToUsd };
