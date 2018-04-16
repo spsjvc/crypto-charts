@@ -12,7 +12,7 @@ const fetchDataForChart = (coin, interval) =>
 
 const fetchLiveDataForChart = coin =>
   axios.get(
-    `https://min-api.cryptocompare.com/data/histominute?fsym=${coin}&tsym=USD&limit=2`
+    `https://min-api.cryptocompare.com/data/histominute?fsym=${coin}&tsym=USD&limit=9`
   );
 
 export { fetchTopCoins, fetchDataForChart, fetchLiveDataForChart };
