@@ -4,9 +4,12 @@ import { Button, Icon, Dropdown, Menu } from 'antd';
 
 import { loadLayoutsFromStorage } from '../utils/storageHelper';
 
+let didButtonClickFirst = false;
+
 class SavedLayoutsMenu extends Component {
   static propTypes = {
-    onSelectLayout: PropTypes.func.isRequired
+    onSelectLayout: PropTypes.func.isRequired,
+    onDeleteLayout: PropTypes.func.isRequired
   };
 
   state = {
@@ -14,6 +17,11 @@ class SavedLayoutsMenu extends Component {
   };
 
   handleMenuItemClick = menuItem => {
+    if (didButtonClickFirst) {
+      didButtonClickFirst = false;
+      return;
+    }
+
     const { onSelectLayout } = this.props;
     const { savedLayouts } = this.state;
 
@@ -27,6 +35,7 @@ class SavedLayoutsMenu extends Component {
   };
 
   render() {
+    const { onDeleteLayout } = this.props;
     const { savedLayouts } = this.state;
 
     return (
@@ -49,8 +58,21 @@ class SavedLayoutsMenu extends Component {
                 You don't have any saved layouts
               </Menu.Item>
             ) : (
-              savedLayouts.map(layouts => (
-                <Menu.Item key={layouts.name}>{layouts.name} </Menu.Item>
+              savedLayouts.map(layout => (
+                <Menu.Item key={layout.name}>
+                  {layout.name}
+                  <Button
+                    style={{ float: 'right' }}
+                    size="small"
+                    type="danger"
+                    onClick={() => {
+                      didButtonClickFirst = true;
+                      onDeleteLayout(layout.name);
+                    }}
+                  >
+                    x
+                  </Button>
+                </Menu.Item>
               ))
             )}
           </Menu>

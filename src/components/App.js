@@ -6,7 +6,10 @@ import CoinGrid from './CoinGrid';
 import SaveLayoutMenu from './SaveLayoutMenu';
 import SavedLayoutsMenu from './SavedLayoutsMenu';
 
-import { loadLayoutsFromStorage } from '../utils/storageHelper';
+import {
+  loadLayoutsFromStorage,
+  removeLayoutFromStorage
+} from '../utils/storageHelper';
 
 class App extends Component {
   state = {
@@ -70,6 +73,10 @@ class App extends Component {
     });
   };
 
+  deleteLayout = layout => {
+    removeLayoutFromStorage(layout);
+  };
+
   render() {
     const { displayedCharts, savedLayouts, selectedLayout } = this.state;
 
@@ -86,7 +93,10 @@ class App extends Component {
               savedLayouts={savedLayouts}
               layout={selectedLayout}
             />
-            <SavedLayoutsMenu onSelectLayout={this.selectLayout} />
+            <SavedLayoutsMenu
+              onSelectLayout={this.selectLayout}
+              onDeleteLayout={this.deleteLayout}
+            />
             <SaveLayoutMenu onSaveLayout={this.saveLayout} />
             <Button
               type="danger"

@@ -19,4 +19,13 @@ const loadLayoutsFromStorage = () => {
   return savedLayouts;
 };
 
-export { saveLayoutToStorage, loadLayoutsFromStorage };
+const removeLayoutFromStorage = layout => {
+  const savedLayouts = JSON.parse(localStorage.getItem('savedLayouts'));
+
+  localStorage.setItem(
+    'savedLayouts',
+    JSON.stringify(savedLayouts.filter(l => l.name !== layout))
+  );
+};
+
+export { saveLayoutToStorage, loadLayoutsFromStorage, removeLayoutFromStorage };
