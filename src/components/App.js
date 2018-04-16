@@ -42,7 +42,7 @@ class App extends Component {
   };
 
   saveLayout = layout => {
-    const { savedLayouts } = this.state;
+    const { savedLayouts, displayedCharts } = this.state;
 
     if (
       loadLayoutsFromStorage()
@@ -53,6 +53,11 @@ class App extends Component {
         'Layout with the same name already exists. Please choose another name.'
       );
 
+      return;
+    }
+
+    if (displayedCharts.length === 0) {
+      message.error("You can't save a layout without any charts.");
       return;
     }
 
