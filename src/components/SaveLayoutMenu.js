@@ -45,6 +45,12 @@ class SaveLayoutMenu extends Component {
       <Popover
         placement="topRight"
         style={{ alignItems: 'right' }}
+        visible={isPopoverVisible}
+        onVisibleChange={visible => {
+          this.setState({
+            isPopoverVisible: visible
+          });
+        }}
         content={
           <Form.Item
             validateStatus={inputValue === '' ? 'error' : 'success'}
@@ -61,7 +67,6 @@ class SaveLayoutMenu extends Component {
             />
           </Form.Item>
         }
-        visible={isPopoverVisible}
       >
         <Button
           style={{ position: 'fixed', bottom: '25px', left: '610px' }}
