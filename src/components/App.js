@@ -7,6 +7,8 @@ import SaveLayoutMenu from './SaveLayoutMenu';
 import SavedLayoutsMenu from './SavedLayoutsMenu';
 import Tutorial from './Tutorial';
 
+import { checkIsTutorialSeen, setTutorialToSeen } from '../utils/storageHelper';
+
 import {
   loadLayoutsFromStorage,
   removeLayoutFromStorage
@@ -19,6 +21,12 @@ class App extends Component {
     selectedLayout: null,
     isTutorialVisible: true
   };
+
+  componentWillMount() {
+    this.setState({
+      isTutorialVisible: !checkIsTutorialSeen()
+    });
+  }
 
   addChart = chart => {
     const { displayedCharts } = this.state;
@@ -97,9 +105,14 @@ class App extends Component {
         <Tutorial
           isVisible={isTutorialVisible}
           onCancel={() => {
-            this.setState({
-              isTutorialVisible: false
-            });
+            this.setState(
+              {
+                isTutorialVisible: false
+              },
+              () => {
+                setTutorialToSeen();
+              }
+            );
           }}
         />
         <Row>

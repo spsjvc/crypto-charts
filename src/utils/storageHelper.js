@@ -28,4 +28,19 @@ const removeLayoutFromStorage = layout => {
   );
 };
 
-export { saveLayoutToStorage, loadLayoutsFromStorage, removeLayoutFromStorage };
+const checkIsTutorialSeen = () => {
+  const stringified = localStorage.getItem('isTutorialSeen');
+  return stringified ? JSON.parse(stringified) : false;
+};
+
+const setTutorialToSeen = () => {
+  localStorage.setItem('isTutorialSeen', JSON.stringify(true));
+};
+
+export {
+  saveLayoutToStorage,
+  loadLayoutsFromStorage,
+  removeLayoutFromStorage,
+  checkIsTutorialSeen,
+  setTutorialToSeen
+};
