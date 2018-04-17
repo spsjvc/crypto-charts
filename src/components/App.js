@@ -5,6 +5,7 @@ import CoinList from './CoinList';
 import CoinGrid from './CoinGrid';
 import SaveLayoutMenu from './SaveLayoutMenu';
 import SavedLayoutsMenu from './SavedLayoutsMenu';
+import Tutorial from './Tutorial';
 
 import {
   loadLayoutsFromStorage,
@@ -15,7 +16,8 @@ class App extends Component {
   state = {
     displayedCharts: [],
     savedLayouts: [],
-    selectedLayout: null
+    selectedLayout: null,
+    isTutorialVisible: true
   };
 
   addChart = chart => {
@@ -83,10 +85,23 @@ class App extends Component {
   };
 
   render() {
-    const { displayedCharts, savedLayouts, selectedLayout } = this.state;
+    const {
+      displayedCharts,
+      savedLayouts,
+      selectedLayout,
+      isTutorialVisible
+    } = this.state;
 
     return (
       <div>
+        <Tutorial
+          isVisible={isTutorialVisible}
+          onCancel={() => {
+            this.setState({
+              isTutorialVisible: false
+            });
+          }}
+        />
         <Row>
           <Col span={6}>
             <CoinList onAddChart={this.addChart} />
@@ -114,6 +129,16 @@ class App extends Component {
               }}
             >
               Clear layout <Icon type="delete" />
+            </Button>
+            <Button
+              style={{ position: 'fixed', bottom: '25px', right: '25px' }}
+              onClick={() => {
+                this.setState({
+                  isTutorialVisible: true
+                });
+              }}
+            >
+              Help <Icon type="question" />
             </Button>
           </Col>
         </Row>
