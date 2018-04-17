@@ -21,6 +21,17 @@ class CoinGrid extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
+    if (
+      this.props.displayedCharts.length !== 0 &&
+      nextProps.displayedCharts.length === 0
+    ) {
+      this.setState({
+        layout: []
+      });
+
+      return;
+    }
+
     if (nextProps.layout !== this.props.layout) {
       this.setState({
         layout: nextProps.layout ? nextProps.layout.layout : []
