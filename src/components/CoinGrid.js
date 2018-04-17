@@ -57,6 +57,10 @@ class CoinGrid extends Component {
     const oldNumberOfCharts = this.props.displayedCharts.length;
     const newNumberOfCharts = nextProps.displayedCharts.length;
 
+    if (oldNumberOfCharts === newNumberOfCharts) {
+      return;
+    }
+
     const chart =
       newNumberOfCharts > oldNumberOfCharts
         ? nextProps.displayedCharts.filter(
