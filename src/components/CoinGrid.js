@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import GridLayout from 'react-grid-layout';
 import { Button, Card, Icon } from 'antd';
+import { find } from 'lodash';
 
 import CoinChart from './CoinChart';
 
@@ -103,6 +104,17 @@ class CoinGrid extends Component {
     });
   }
 
+  updateLayout = newLayout => {
+    const { layout } = this.state;
+
+    this.setState({
+      layout: newLayout.map(l => ({
+        ...l,
+        chart: find(layout, lay => lay.i === l.i).chart
+      }))
+    });
+  };
+
   render() {
     const { onDeleteChart, displayedCharts } = this.props;
     const { layout } = this.state;
@@ -124,7 +136,13 @@ class CoinGrid extends Component {
             the left to add some.
           </div>
         ) : (
-          <GridLayout layout={layout} cols={12} rowHeight={50} width={1200}>
+          <GridLayout
+            layout={layout}
+            cols={12}
+            rowHeight={50}
+            width={1200}
+            onLayoutChange={this.updateLayout}
+          >
             {layout.map(item => (
               <div
                 style={{
