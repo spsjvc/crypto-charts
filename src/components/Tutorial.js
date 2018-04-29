@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button } from 'antd';
 
@@ -62,19 +62,19 @@ class Tutorial extends Component {
         closable={false}
         visible={isVisible}
         footer={
-          <div>
+          <Fragment>
             {step === steps.length - 1 ? null : (
               <Button onClick={onCancel}>Cancel</Button>
             )}
             <Button onClick={this.handleOk} type="primary">
               {step === steps.length - 1 ? "Let's go!" : 'Next'}
             </Button>
-          </div>
+          </Fragment>
         }
       >
         <div style={{ textAlign: 'center' }}>
           {step === steps.length - 1 ? null : (
-            <div>
+            <Fragment>
               <img
                 alt={steps[step].image}
                 style={{ width: '600px' }}
@@ -82,7 +82,7 @@ class Tutorial extends Component {
               />
               <br />
               <br />
-            </div>
+            </Fragment>
           )}
           <h3>{steps[step].title}</h3>
           <h4>{steps[step].description}</h4>

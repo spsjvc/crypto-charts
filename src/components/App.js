@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Row, Col, message, Button, Icon } from 'antd';
 
 import CoinList from './CoinList';
@@ -101,7 +101,7 @@ class App extends Component {
     } = this.state;
 
     return (
-      <div>
+      <Fragment>
         <Tutorial
           isVisible={isTutorialVisible}
           onCancel={() => {
@@ -155,7 +155,7 @@ class App extends Component {
             </Button>
           </Col>
         </Row>
-      </div>
+      </Fragment>
     );
   }
 }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import GridLayout from 'react-grid-layout';
 import { Button, Card, Icon } from 'antd';
@@ -129,12 +129,12 @@ class CoinGrid extends Component {
         }}
       >
         {displayedCharts.length === 0 ? (
-          <div>
+          <Fragment>
             Hmmm...
             <br />
             Looks like you haven't added any charts yet. Check out the menu on
             the left to add some.
-          </div>
+          </Fragment>
         ) : (
           <GridLayout
             layout={layout}
